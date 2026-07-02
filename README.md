@@ -17,11 +17,7 @@
 
 ## Installation
 
-```bash
-pip install latincy-ext
-```
-
-For development:
+Install from source (PyPI release coming soon):
 
 ```bash
 git clone https://github.com/diyclassics/latincy-ext
@@ -85,7 +81,7 @@ The `lila_linkbank.sqlite` (~101 MB) and `lila_linkbank_full.sqlite` (~115 MB) a
 
 ## Demo Notebook
 
-[`notebooks/lila_lemmabank_linker_demo.ipynb`](notebooks/lila_lemmabank_linker_demo.ipynb) walks through the full evaluation: live linking on Caesar, orthographic robustness, coverage spike (**~99.3%** end-to-end on held-out Catullus), oracle eval (MFS baseline), and the v2 disambiguation verdict.
+[`notebooks/lila_lemmabank_linker_demo.ipynb`](notebooks/lila_lemmabank_linker_demo.ipynb) walks through the full evaluation: live linking on Caesar, orthographic robustness, coverage spike (**~99.4%** end-to-end on held-out Catullus), oracle eval (MFS baseline), and the v2 disambiguation verdict.
 
 ## Acknowledgments
 

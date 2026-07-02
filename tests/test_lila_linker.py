@@ -14,6 +14,7 @@ import latincy_ext  # noqa: F401 — registers factories
 URI_SUM   = "http://lila-erc.eu/data/id/lemma/111"
 URI_CIUIS = "http://lila-erc.eu/data/id/lemma/222"
 URI_WR    = "http://lila-erc.eu/data/id/lemma/333"  # reached via wr_uri only
+URI_FORM  = "http://lila-erc.eu/data/id/lemma/444"  # reached via form_uri only
 
 
 def _build_db(path: str) -> None:
@@ -53,6 +54,10 @@ def _build_db(path: str) -> None:
     con.executemany(
         "INSERT INTO wr_uri VALUES (?,?,?)",
         [("ciuitatem", URI_WR, "lemma")],  # an orthographic variant
+    )
+    con.executemany(
+        "INSERT INTO form_uri VALUES (?,?,?)",
+        [("formfall", URI_FORM, 7)],  # attested only as a surface form
     )
     con.commit()
     con.close()
@@ -124,6 +129,23 @@ class TestLilaResolver:
         assert res.uri == URI_WR
         assert res.source == "wr"
 
+    def test_bare_lemma_fallback_on_pos_miss(self, db_path):
+        from latincy_ext.lila_linker import LilaResolver
+        # "sum" exists under AUX/VERB but not ADV — POS-keyed lookup misses,
+        # so it falls back to the bare-lemma (any-UPOS) path.
+        res = LilaResolver(db_path).resolve("sum", "ADV")
+        assert res.uri == URI_SUM
+        assert res.source == "lemma"
+
+    def test_form_fallback_is_candidates_only(self, db_path):
+        from latincy_ext.lila_linker import LilaResolver
+        # lemma misses lemma_uri and wr_uri; surface form hits form_uri.
+        # By design the form path returns candidates but no top URI.
+        res = LilaResolver(db_path).resolve("zzznolemma", "NOUN", "formfall")
+        assert res.source == "form"
+        assert res.uri is None
+        assert res.candidates == [URI_FORM]
+
     def test_miss_returns_empty_resolution(self, db_path):
         from latincy_ext.lila_linker import LilaResolver
         res = LilaResolver(db_path).resolve("zzznothing", "NOUN")
@@ -184,3 +206,29 @@ class TestLilaLinkerComponent:
         with pytest.raises(ValueError, match="db_path"):
             _nlp.add_pipe("lila_linker", config={"db_path": None})
             _nlp("test")
+
+    def test_env_var_fallback(self, db_path, monkeypatch):
+        # With no db_path in config, the factory falls back to LATINCY_LILA_DB.
+        monkeypatch.setenv("LATINCY_LILA_DB", db_path)
+        _nlp = spacy.blank("la")
+        _nlp.add_pipe("lila_linker", config={"db_path": None})
+        doc = _doc_with_lemma("sum", "AUX")
+        doc = _nlp.get_pipe("lila_linker")(doc)
+        assert doc[0]._.lila_uri == URI_SUM
+
+
+# ---------------------------------------------------------------------------
+# Serialization
+# ---------------------------------------------------------------------------
+
+class TestSerialization:
+    def test_to_disk_from_disk_roundtrip(self, db_path, tmp_path):
+        from latincy_ext.lila_linker import LilaLinker
+        save_dir = tmp_path / "pipe"
+        LilaLinker(db_path).to_disk(str(save_dir))
+
+        restored = LilaLinker(db_path).from_disk(str(save_dir))
+        assert restored.db_path == db_path
+        # resolver still works after reload
+        res = restored.resolver.resolve("sum", "AUX")
+        assert res.uri == URI_SUM

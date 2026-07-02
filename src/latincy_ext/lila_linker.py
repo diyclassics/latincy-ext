@@ -36,6 +36,7 @@ Academic / non-commercial use only when using the enriched artifact.
 
 from __future__ import annotations
 
+import json
 import os
 import re
 import sqlite3
@@ -198,11 +199,10 @@ class LilaLinker:
     def to_disk(self, path, *, exclude=()):
         Path(path).mkdir(parents=True, exist_ok=True)
         (Path(path) / "cfg.json").write_text(
-            f'{{"db_path": "{self.db_path}"}}', encoding="utf-8"
+            json.dumps({"db_path": self.db_path}), encoding="utf-8"
         )
 
     def from_disk(self, path, *, exclude=()):
-        import json
         cfg = json.loads((Path(path) / "cfg.json").read_text(encoding="utf-8"))
         self.db_path = cfg["db_path"]
         self.resolver = LilaResolver(self.db_path)
