@@ -24,9 +24,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/diyclassics/latincy-ext"
-Repository = "https://github.com/diyclassics/latincy-ext"
-Issues = "https://github.com/diyclassics/latincy-ext/issues"
+Homepage = "https://github.com/latincy/latincy-ext"
+Repository = "https://github.com/latincy/latincy-ext"
+Issues = "https://github.com/latincy/latincy-ext/issues"
 
 [project.entry-points.spacy_factories]
 lila_linker = "latincy_ext.lila_linker"

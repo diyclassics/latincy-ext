@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/diyclassics/latincy-ext/main/assets/latincy-ext-logo.jpg" alt="LatinCy Ext" width="400">
+  <img src="https://raw.githubusercontent.com/latincy/latincy-ext/main/assets/latincy-ext-logo.jpg" alt="LatinCy Ext" width="400">
 </p>
 
 # LatinCy Ext
@@ -20,7 +20,7 @@
 Install from source (PyPI release coming soon):
 
 ```bash
-git clone https://github.com/diyclassics/latincy-ext
+git clone https://github.com/latincy/latincy-ext
 pip install -e latincy-ext
 ```
 
