@@ -73,7 +73,7 @@ The lookup table is built by `extract_macronized_morph.py` in [latincy-words](ht
 
 ## The SQLite Artifact
 
-The `lila_linkbank.sqlite` (~101 MB) and `lila_linkbank_full.sqlite` (~115 MB) artifacts are **not bundled** with this package — they are too large and carry a distinct license.
+The `lila_linkbank.sqlite` (~105 MB) and `lila_linkbank_full.sqlite` (~120 MB) artifacts are **not bundled** with this package — they are too large and carry a distinct license.
 
 **Building the artifact:** see `build_full.sh` in the `lila-lemmabank-linker` branch of [latincy-treebanks](https://github.com/diyclassics/latincy-treebanks).
 
