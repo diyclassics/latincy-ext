@@ -83,7 +83,12 @@ The `lila_linkbank.sqlite` (~105 MB) and `lila_linkbank_full.sqlite` (~120 MB) a
 
 [`notebooks/demo_lila_lemmabank_linker.ipynb`](notebooks/demo_lila_lemmabank_linker.ipynb) walks through the full evaluation: live linking on Caesar, orthographic robustness, coverage spike (**~99.4%** end-to-end on held-out Catullus), oracle eval (MFS baseline), and the v2 disambiguation verdict.
 
-## Acknowledgments
+## Bibliography
 
-- **LiLa Lemma Bank** — CIRCSE Research Centre, Università Cattolica del Sacro Cuore, Milan. ERC Consolidator Grant 769994 (PI: Marco Passarotti).
-- **LASLA** — Laboratoire d'Analyse Statistique des Langues Anciennes, Université de Liège.
+The backbone linkbank derives from the **LiLa Lemma Bank** (CIRCSE Research Centre, Università Cattolica del Sacro Cuore, Milan; ERC Consolidator Grant 769994, PI Marco Passarotti); the enriched artifact incorporates attestation links from **LASLA** (Université de Liège). These components extend the **LatinCy** pipelines and the **spaCy** framework; the `macron_morph` lookup is derived from Wiktionary via **Wiktextract** (kaikki.org).
+
+- Burns, P. J. (2023). LatinCy: Synthetic trained pipelines for Latin NLP. *arXiv*. https://doi.org/10.48550/arXiv.2305.04365
+- Laboratoire d'Analyse Statistique des Langues Anciennes (LASLA). *Opera Latina* [annotated Latin corpus]. Université de Liège. https://www.lasla.uliege.be/
+- Honnibal, M., Montani, I., Van Landeghem, S., & Boyd, A. (2020). spaCy: Industrial-strength natural language processing in Python. *Zenodo*. https://doi.org/10.5281/zenodo.1212303
+- Mambrini, F., & Passarotti, M. C. (2023). The LiLa Lemma Bank: A knowledge base of Latin canonical forms. *Journal of Open Humanities Data*, 9(1), 28. https://doi.org/10.5334/johd.145
+- Ylönen, T. (2022). Wiktextract: Wiktionary as machine-readable structured data. In *Proceedings of the Thirteenth Language Resources and Evaluation Conference (LREC)* (pp. 1317–1325). https://aclanthology.org/2022.lrec-1.140/
