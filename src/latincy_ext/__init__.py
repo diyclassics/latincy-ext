@@ -2,5 +2,6 @@
 
 from latincy_ext.lila_linker import LilaLinker
 from latincy_ext.macron_morph import MacronMorphComponent
+from latincy_ext.syllabifier import SyllabifierComponent
 
-__all__ = ["LilaLinker", "MacronMorphComponent"]
+__all__ = ["LilaLinker", "MacronMorphComponent", "SyllabifierComponent"]
