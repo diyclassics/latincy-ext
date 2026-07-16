@@ -11,6 +11,11 @@ within a sentence the k-th ruled-key occurrence in the parse is matched to the
 k-th in the gold. Sentences whose ruled-key counts disagree are skipped (logged)
 so a tokenization mismatch can never silently score as a hit or a miss.
 
+Caveat: if MFS scores ~100% here, the corpus's gold almost certainly *lumps* the
+key's senses onto one URI (e.g. the Augustine LiLa export tags every ut 130906).
+Then any distinction the rule draws is scored wrong and the "lift" goes negative —
+a gold-blindness artifact, not rule failure. Adjudicate with link_accuracy_sample.
+
 Usage:
     python rule_eval.py <db> <gold_conllup> [<gold_conllup> ...]
 """

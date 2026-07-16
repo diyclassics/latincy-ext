@@ -40,10 +40,30 @@ Reproduced by the graduated scripts:
 analyze_ambiguity : 27,630 gold (lemma,UPOS) keys; 383 ambiguous (1.4%);
                     19.6% of tokens on an ambiguous key; 80.4% already unique.
 coverage_spike B  : Catullus 13,129 gold tokens → 99.0% top-1 == gold (MFS baseline).
-rule_eval (ut)    : 513 held-out ut tokens → MFS 77.8%, rule 93.96% (+16.2 pts),
-                    pick changed on 125 tokens.
 ```
 
-The `rule_eval` lift is the case for shipping the `ut` mood rule: a hand-written
-FEATS/dependency rule recovers ~16 points on the tail it fires on, at zero
-training cost — consistent with the notebook's "a cheap rule beats a biencoder".
+### `rule_eval` (ut mood) — read the gold before the lift
+
+| corpus | genre / era | gold uses both ut URIs? | MFS | rule | Δ | n |
+|---|---|---|---|---|---|---|
+| Caesar   | classical prose | yes (LASLA) | 81.3% | 96.3% | **+15.0** | 428 |
+| Catullus | classical verse | yes (LASLA) | 60.0% | 82.4% | **+22.4** | 85 |
+| Augustine (*Civ. Dei*) | Late Latin prose | **no — all 2,514 ut → 130906** | 100.0% | 85.9% | −14.1 | 2,430 |
+
+The Augustine row is not a rule failure — it is a **gold-blindness artifact**. That
+export tags *every* `ut` with the subjunctive/purpose URI (130906) and never uses
+the temporal 130905, so MFS is 100% by construction and any distinction the rule
+draws is scored wrong. Spot-checking the flips (8 sampled) shows ~6/8 are genuine
+comparative/temporal `ut` + indicative the rule correctly identifies (`ut dixi`
+"as I said", `ut possum` "as I can", `ut cognouimus` "as we learned"); the ~2/8
+real errors trace to **upstream** parser/morph mistakes the rule inherits (a
+subjunctive mistagged `Ind`; `ut` attached to a non-verb head), not to the rule
+logic.
+
+Takeaways:
+- Where the treebank distinguishes the two `ut` senses (LASLA), the rule recovers
+  15–22 points at zero training cost — the case for shipping it (opt-in).
+- Where the gold lumps senses, blind gold-agreement *understates* the rule. Judge
+  it with `link_accuracy_sample.py` (human `verdict`), not the coverage number.
+- The rule is only as good as the parse/morph feeding it; that ceiling is real and
+  should be quoted alongside the lift.
