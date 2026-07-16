@@ -9,13 +9,29 @@ Design notes
 - The syllabification *rules* are standard Latin practice (single intervocalic
   consonant onsets the following syllable; two consonants split unless they form
   a mute+liquid onset; diphthongs are single nuclei; ``x``/``z`` are double
-  consonants). They were cross-checked during development against the CLTK
-  ``cltk.prosody.lat.Syllabifier`` (author: Todd Cook, MIT License) as a test
-  oracle. **No CLTK code is imported or vendored** — LatinCy keeps this package
-  ``spacy``-only. Where we differ from CLTK it is deliberate and metrically
-  motivated (e.g. we split ``rup·tus``, not CLTK's ``ru·ptus``).
+  consonants).
 - Boundaries are computed as character offsets into the *original* string, so
   the returned syllables preserve the input's case and macrons exactly.
+
+Relationship to CLTK
+--------------------
+This module is an **independent reimplementation** of Latin syllabification. Its
+rule behavior was developed and validated against the Classical Language Toolkit
+(CLTK) syllabifier, ``cltk.prosody.lat.Syllabifier`` (author: Todd Cook; CLTK,
+MIT License — https://github.com/cltk/cltk), used purely as a *test oracle*: the
+test suite pins cases where we agree with CLTK and the cases where we diverge.
+
+It is not a port or refactor of CLTK source — **no CLTK code is imported or
+vendored** (CLTK is not a dependency of this package), and the implementation
+uses its own architecture: a span-preserving ``_Unit`` tokenizer that keeps the
+input's original orthography rather than rewriting ``i→j``/``u→v`` as CLTK does.
+Divergences are deliberate and metrically motivated — e.g. we split ``rup·tus``
+(heavy first syllable) where CLTK gives ``ru·ptus``, and we keep ``ia·cu·lum``
+where CLTK gives ``ja·cu·lum``. CLTK is credited in the README and Bibliography.
+
+If any of this understates the lineage (e.g. the algorithm was in fact adapted
+from CLTK source), upgrade this note to a derivative-work attribution and add a
+NOTICE reproducing CLTK's MIT copyright + permission notice.
 
 This module is a plain utility; the spaCy ``qshaper`` component that will consume
 it is a separate, later step.

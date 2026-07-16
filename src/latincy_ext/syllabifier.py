@@ -26,6 +26,11 @@ as :mod:`latincy_ext.macron_morph`. Chain after the macronizer for plain text::
 
 Span-level metrical shape (``mShape``: elision, brevis-in-longo, clausulae) is a
 separate, later component and is deliberately out of scope here.
+
+Provenance: the wrapped :mod:`latincy_ext.syllabify` rules are an independent
+reimplementation validated against CLTK's ``cltk.prosody.lat.Syllabifier``
+(Todd Cook; CLTK, MIT) as a test oracle — see that module's "Relationship to
+CLTK" note. No CLTK code is imported or vendored.
 """
 
 from __future__ import annotations
